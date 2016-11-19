@@ -106,8 +106,8 @@
 
 	      var updateNickname = function (msg) {
 	        this.changeOpacity(null, 0, 250, function () {
-	          this.changeOpacity(0, 1, 350);
-	          this.setState({ nickname: msg, element: _react2.default.createElement(_game2.default, null) });
+	          this.setState({ nickname: msg, element: _react2.default.createElement(_game2.default, { socket: this.socket }) });
+	          this.changeOpacity(0, 1, 300);
 	        }.bind(this));
 	      }.bind(this);
 
@@ -29105,43 +29105,90 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Square = function (_React$Component) {
-	  _inherits(Square, _React$Component);
+	function Square(props) {
+	  return _react2.default.createElement(
+	    'button',
+	    { className: 'square', onClick: function onClick() {
+	        return props.onClick();
+	      } },
+	    props.value
+	  );
+	}
 
-	  function Square() {
-	    _classCallCheck(this, Square);
+	var Board = function (_React$Component) {
+	  _inherits(Board, _React$Component);
 
-	    return _possibleConstructorReturn(this, (Square.__proto__ || Object.getPrototypeOf(Square)).apply(this, arguments));
-	  }
-
-	  _createClass(Square, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement('button', { className: 'square' });
-	    }
-	  }]);
-
-	  return Square;
-	}(_react2.default.Component);
-
-	var Board = function (_React$Component2) {
-	  _inherits(Board, _React$Component2);
-
-	  function Board() {
+	  function Board(props) {
 	    _classCallCheck(this, Board);
 
-	    return _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
+
+	    _this.socket = props.socket;
+	    _this.state = {
+	      ismyturn: false,
+	      squares: Array(9).fill(null),
+	      xIsNext: true
+	    };
+	    _this.handleSocket();
+	    return _this;
 	  }
 
 	  _createClass(Board, [{
+	    key: 'handleClick',
+	    value: function handleClick(i) {
+	      if (this.state.ismyturn || squares[i]) {
+	        return;
+	      }
+
+	      this.socket.emit('square click', i);
+	      this.setState({
+	        waiting: true
+	      });
+
+	      /*
+	      const squares = this.state.squares.slice();
+	      if (calculateWinner(squares) || squares[i]) {
+	        return;
+	      }
+	        squares[i] = this.state.xIsNext ? 'X' : 'O';
+	      this.setState({
+	        squares: squares,
+	        xIsNext: !this.state.xIsNext,
+	      });
+	      */
+	    }
+	  }, {
+	    key: 'handleSocket',
+	    value: function handleSocket() {
+	      this.socket.on('new state', function (state) {
+	        setState(state);
+	      });
+	      this.socket.on('you win', function () {
+	        setState({ ended: true });alert('You win!:)');
+	      });
+	      this.socket.on('you lose', function () {
+	        setState({ ended: true });alert('You lose! :(');
+	      });
+	    }
+	  }, {
 	    key: 'renderSquare',
 	    value: function renderSquare(i) {
-	      return _react2.default.createElement(Square, null);
+	      var _this2 = this;
+
+	      return _react2.default.createElement(Square, { value: this.state.squares[i], onClick: function onClick() {
+	          return _this2.handleClick(i);
+	        } });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var status = 'Next player: X';
+	      var winner = calculateWinner(this.state.squares);
+	      var status = void 0;
+	      if (winner) {
+	        status = 'Winner: ' + winner;
+	      } else {
+	        status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -29178,13 +29225,16 @@
 	  return Board;
 	}(_react2.default.Component);
 
-	var Game = function (_React$Component3) {
-	  _inherits(Game, _React$Component3);
+	var Game = function (_React$Component2) {
+	  _inherits(Game, _React$Component2);
 
-	  function Game() {
+	  function Game(props) {
 	    _classCallCheck(this, Game);
 
-	    return _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).apply(this, arguments));
+	    var _this3 = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, props));
+
+	    _this3.socket = props.socket;
+	    return _this3;
 	  }
 
 	  _createClass(Game, [{
@@ -29196,7 +29246,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'game-board' },
-	          _react2.default.createElement(Board, null)
+	          _react2.default.createElement(Board, { socket: this.socket })
 	        ),
 	        _react2.default.createElement(
 	          'div',

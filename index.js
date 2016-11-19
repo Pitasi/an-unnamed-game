@@ -27,7 +27,9 @@ http.listen(PORT, function(){
 });
 
 /* Socket manager */
-var clients = {}
+var clients = {};
+var waiting_queue = [];
+var matches = [];
 
 io.on('connection', function(socket){
   console.log('a user connected');
