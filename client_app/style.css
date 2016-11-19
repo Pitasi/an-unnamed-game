@@ -1,0 +1,103 @@
+* { margin: 0; padding: 0; box-sizing: border-box; opacity: inherit; }
+
+html, body, #main-wrapper { font: 13px Helvetica, Arial; height: 100%; width: 100%; opacity: 1; }
+
+#main-wrapper {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.nickname-form-container {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 300px;
+}
+
+.nickname-form-container form {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 20px;
+}
+
+.nickname-form-container input {
+  height: 70px;
+  margin: 0;
+  padding: 10px;
+  font-size: 22px;
+  text-align: center;
+  border: 1px solid black;
+  vertical-align: bottom;
+}
+
+.nickname-form-container input[type="text"] {
+  width: 300px;
+}
+
+.nickname-form-container input[type="submit"] {
+  width: 70px;
+}
+
+.greetings {
+  color: white;
+  font-size: 2.2em;
+  margin-bottom: 30px;
+}
+
+.example-appear {
+  opacity: 0.01;
+}
+
+.example-appear.example-appear-active {
+  opacity: 1;
+  transition: opacity 5000s ease-in;
+}
+
+
+
+/* */
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.square:focus {
+  outline: none;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
