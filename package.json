@@ -4,7 +4,8 @@
   "description": "Progetto per Programmazione di Interfacce @ UniPi.",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node server",
+    "build": "npm start && webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

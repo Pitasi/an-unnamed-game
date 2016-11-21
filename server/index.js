@@ -1,12 +1,29 @@
-const PORT = 3001;
+const PORT = 3000;
 
 var express = require('express');
+var httpProxy = require('http-proxy');
+var proxy = httpProxy.createProxyServer();
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 /* WebServer */
 app.use(express.static(__dirname + '/../client'));
+app
+
+/* if not production */
+var bundle = require('./bundle.js');
+bundle();
+app.all('/dist/*', function (req, res) {
+  proxy.web(req, res, {
+      target: 'http://localhost:8080'
+  });
+});
+proxy.on('error', function(e) {
+  console.log('Could not connect to proxy, please try again...');
+});
+
+/* --- */
 
 http.listen(PORT, function(){
   console.log('listening on *:'+PORT);
