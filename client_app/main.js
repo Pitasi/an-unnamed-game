@@ -26,7 +26,7 @@ class MainContainer extends React.Component {
 
     var updateNickname = (function(msg){
                             this.changeOpacity(null, 0, 250, (function() {
-                              this.setState({nickname: msg, element: <Game socket={this.socket} />});
+                              this.setState({nickname: msg, element: <Game socket={this.socket} nickname={msg} />});
                               this.changeOpacity(0, 1, 300);
                             }).bind(this))
                           }).bind(this);

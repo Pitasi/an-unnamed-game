@@ -1,131 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function Square(props) {
+function UserList(props) {
+  var list = props.users.map( user => { return (<li className="user" key={user}>{user}</li>) });
   return (
-    <button className="square" onClick={() => props.onClick()}>
-        {props.value}
-    </button>
+    <ol>{list}</ol>
   );
-}
-
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.socket = props.socket;
-    this.state = {
-      ismyturn: false,
-      squares: Array(9).fill(null),
-      xIsNext: true,
-    };
-    this.handleSocket();
-  }
-
-  handleClick(i) {
-    if (this.state.ismyturn || squares[i]) {
-      return;
-    }
-
-    this.socket.emit('square click', i);
-    this.setState({
-      waiting: true,
-    });
-
-    /*
-    const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-    this.setState({
-      squares: squares,
-      xIsNext: !this.state.xIsNext,
-    });
-    */
-  }
-
-  handleSocket() {
-    this.socket.on('new state', function(state){setState(state)});
-    this.socket.on('you win', function(){setState({ended: true}); alert('You win!:)')});
-    this.socket.on('you lose', function(){setState({ended: true}); alert('You lose! :(')})
-  }
-
-  renderSquare(i) {
-    return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
-  }
-
-  render() {
-    const winner = calculateWinner(this.state.squares);
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
-    return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
 }
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {list: [],
+                  nickname: this.props.nickname}
     this.socket = props.socket;
+    this.handleSocket();
+    this.socket.emit('list request');
   }
+
+  handleSocket() {
+    this.socket.on('list update', (function(userList) {
+      this.setState({list: userList});
+    }).bind(this));
+  }
+
   render() {
     return (
       <div className="game">
         <div className="game-board">
-          <Board socket={this.socket} />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
+          <UserList users={this.state.list} />
         </div>
       </div>
     );
   }
 }
 
-// ========================================
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
 
 module.exports = Game

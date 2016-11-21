@@ -28,16 +28,24 @@ http.listen(PORT, function(){
 
 /* Socket manager */
 var clients = {};
-var waiting_queue = [];
-var matches = [];
+var getKeys = function(obj){
+   var keys = [];
+   for(var key in obj){
+      if (obj[key] !== null) keys.push(key);
+   }
+   return keys;
+}
 
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
     console.log('a user disconnected');
+
+    // se l'utente aveva un nickname associato, lo elimino
     for (var i in clients)
       if (clients[i] === socket) {
         clients[i] = null;
+        io.emit('list update', getKeys(clients));
         break;
       }
   });
@@ -57,6 +65,13 @@ io.on('connection', function(socket){
       console.log('Succesfully logged in: ' + nickname);
       clients[nickname] = socket;
       socket.emit('username valid', nickname);
+
+      // broadcast the new user logged in
+      socket.on('list request', function() {
+        socket.emit('list update', getKeys(clients));
+      })
+      socket.broadcast.emit('list update', getKeys(clients));
+
     }
   });
 
