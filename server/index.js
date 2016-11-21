@@ -1,26 +1,12 @@
 const PORT = 3001;
 
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 /* WebServer */
-const static_files = [
-  'index.html',
-  'bundle.js',
-  'style.css'
-]
-
-for (var i in static_files) {
-  const filename = static_files[i];
-  app.get('/'+filename, function(req, res){
-    res.sendFile(__dirname+'/client_app/'+filename);
-  });
-}
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname+'/client_app/index.html');
-});
+app.use('/prov', express.static('../client/'));
 
 http.listen(PORT, function(){
   console.log('listening on *:'+PORT);

@@ -3,7 +3,7 @@
 html, body, #main-wrapper { font: 13px Helvetica, Arial; height: 100%; width: 100%; opacity: 1; }
 
 #main-wrapper {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.65);
 }
 
 .container {
@@ -46,4 +46,21 @@ html, body, #main-wrapper { font: 13px Helvetica, Arial; height: 100%; width: 10
   color: white;
   font-size: 2.2em;
   margin-bottom: 30px;
+}
+
+/* Game */
+.userlist {
+  position: relative;
+  top: 100px;
+  color: white;
+  font-size: 3em;
+}
+
+.userlist h1 {
+  margin-bottom: 20px;
+  color: #353535;
+}
+
+.userlist .active {
+  color: #ff6ef3;
 }

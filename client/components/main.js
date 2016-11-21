@@ -25,9 +25,9 @@ class MainContainer extends React.Component {
     });
 
     var updateNickname = (function(msg){
-                            this.changeOpacity(null, 0, 250, (function() {
+                            this.changeOpacity(null, 0, 350, (function() {
                               this.setState({nickname: msg, element: <Game socket={this.socket} nickname={msg} />});
-                              this.changeOpacity(0, 1, 300);
+                              this.changeOpacity(0, 1, 450);
                             }).bind(this))
                           }).bind(this);
 
@@ -48,7 +48,7 @@ class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.changeOpacity(0, 1, 500);
+    this.changeOpacity(0, 1, 1500);
 	}
 
   render() {

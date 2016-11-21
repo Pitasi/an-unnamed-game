@@ -2,24 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 function UserList(props) {
-  var list = props.users.map( user => { return (<li className="user" key={user}>{user}</li>) });
+  var list = props.users.map( user => {
+    return (<li className={props.nickname===user?'active':''} key={user}>{user}</li>)
+  });
+
   return (
-    <ol>{list}</ol>
+    <div className="userlist">
+      <h1>Connected users:</h1>
+      <ol>{list}</ol>
+    </div>
   );
 }
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {list: [],
-                  nickname: this.props.nickname}
-    this.socket = props.socket;
+    this.state = {list: []}
     this.handleSocket();
-    this.socket.emit('list request');
+    this.props.socket.emit('list request');
   }
 
   handleSocket() {
-    this.socket.on('list update', (function(userList) {
+    this.props.socket.on('list update', (function(userList) {
       this.setState({list: userList});
     }).bind(this));
   }
@@ -28,7 +32,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <UserList users={this.state.list} />
+          <UserList users={this.state.list} nickname={this.props.nickname} />
         </div>
       </div>
     );

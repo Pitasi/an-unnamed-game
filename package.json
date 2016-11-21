@@ -1,14 +1,22 @@
 {
-  "name": "socket",
-  "version": "1.0.0",
-  "description": "",
+  "name": "final",
+  "version": "0.0.1",
+  "description": "Progetto per Programmazione di Interfacce @ UniPi.",
   "main": "index.js",
   "scripts": {
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pitasi/final-pi.git"
+  },
+  "author": "Antonio Pitasi",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pitasi/final-pi/issues"
+  },
+  "homepage": "https://github.com/Pitasi/final-pi#readme",
   "dependencies": {
     "express": "^4.14.0",
     "react": "^15.4.0",

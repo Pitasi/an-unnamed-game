@@ -2,8 +2,8 @@ var patch = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './main.js',
-  output: { path: __dirname, filename: 'bundle.js' },
+  entry: './client/components/main.js',
+  output: { path: __dirname+'/client/dist', filename: 'bundle.js' },
   module: {
     loaders: [
       {
