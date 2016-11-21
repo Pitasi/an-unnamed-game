@@ -4,6 +4,8 @@ import NicknameSelector from './nickname_selector.jsx';
 import Game from './game.jsx';
 import io from 'socket.io-client';
 
+require('../css/style.less');
+
 class MainContainer extends React.Component {
   constructor(props) {
     super(props);

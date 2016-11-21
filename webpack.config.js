@@ -12,11 +12,15 @@ module.exports = {
 
     // Our application
     './client/components/main.js'],
-  output: { path: __dirname+'/client/dist', filename: 'bundle.js' },
+  output: {
+    path: __dirname+'/client/dist',
+    filename: 'bundle.js',
+    publicPath: '/dist/'
+  },
   module: {
     loaders: [
       {
-        test: /.jsx?$/,
+        test: /\.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
@@ -24,8 +28,8 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        loader: 'style!css'
+        test: /\.less$/,
+        loader: 'style-loader!css-loader!less-loader'
       }
     ]
   },
