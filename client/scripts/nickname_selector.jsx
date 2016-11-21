@@ -37,7 +37,9 @@ class NicknameSelector extends React.Component {
 
         <form onSubmit={this.handleSubmit}>
           <input type="text" maxLength="20" value={this.state.value} onChange={this.handleChange} placeholder="Pick a nickname" />
-          <input type="submit" value="start" disabled={!this.state.value} />
+          <button type="submit" disabled={!this.state.value}>
+            <i className="fa fa-paper-plane" aria-hidden="true"></i>
+          </button>
         </form>
       </div>
     )

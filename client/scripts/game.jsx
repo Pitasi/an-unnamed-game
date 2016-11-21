@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+require('../styles/game.less');
+
 function UserList(props) {
   var list = props.users.map( user => {
     return (<li className={props.nickname===user?'active':''} key={user}>{user}</li>)

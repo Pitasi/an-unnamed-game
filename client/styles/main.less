@@ -1,9 +1,21 @@
+// Variables
+@backgroundcolor: #7bab2e;
+
+// Font-awesome
+@import (css) "//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+
 * { margin: 0; padding: 0; box-sizing: border-box; opacity: inherit; }
 
 html, body, #main-wrapper { font: 13px Helvetica, Arial; height: 100%; width: 100%; opacity: 1; }
 
 #main-wrapper {
-  background: rgba(0, 0, 0, 0.65);
+  background: @backgroundcolor;
+  transition: background .25s ease-in-out;
+  /*
+  &:hover{
+    background: fadeout(@backgroundcolor, 50%);
+  }
+  */
 }
 
 .container {
@@ -24,21 +36,26 @@ html, body, #main-wrapper { font: 13px Helvetica, Arial; height: 100%; width: 10
   padding: 20px;
 }
 
-.nickname-form-container input {
+.nickname-form-container input, .nickname-form-container button {
   height: 70px;
   margin: 0;
   padding: 10px;
   font-size: 22px;
   text-align: center;
-  border: 1px solid black;
   vertical-align: bottom;
 }
 
 .nickname-form-container input[type="text"] {
+  border: 1px solid black;
   width: 300px;
 }
 
-.nickname-form-container input[type="submit"] {
+.nickname-form-container button[type="submit"] {
+  color: white;
+  background: transparent;
+  border: 0;
+  font-size: 30px;
+  text-shadow: 0px 0px 5px black;
   width: 70px;
 }
 
@@ -46,21 +63,4 @@ html, body, #main-wrapper { font: 13px Helvetica, Arial; height: 100%; width: 10
   color: white;
   font-size: 2.2em;
   margin-bottom: 30px;
-}
-
-/* Game */
-.userlist {
-  position: relative;
-  top: 100px;
-  color: white;
-  font-size: 3em;
-}
-
-.userlist h1 {
-  margin-bottom: 20px;
-  color: #353535;
-}
-
-.userlist .active {
-  color: #ff6ef3;
 }
