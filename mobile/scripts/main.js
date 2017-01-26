@@ -8,17 +8,20 @@ class Square extends React.Component {
   constructor(props) {
     super(props)
     this.socket = io()
-    this.socket.on('update', this.changeState.bind(this))
     this.state = {active: false}
   }
 
-  changeState(val) {
-    this.setState({active: val})
+  changeState() {
+    let newstate = !this.state.active
+    this.socket.emit('update', newstate)
+    this.setState({active: newstate})
   }
 
   render() {
     return (
-      <div className={this.state.active?'on':'off'}>
+      <div className={this.state.active?'on':'off'}
+        onTouchStart={this.changeState.bind(this)}
+        onTouchEnd={this.changeState.bind(this)}>
       </div>
     );
   }
