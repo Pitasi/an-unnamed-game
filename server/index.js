@@ -7,10 +7,6 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-/* WebServer */
-app.use(express.static(__dirname + '/../client'));
-app.use("/mobile", express.static(__dirname + "/../mobile"));
-
 /* if not production */
 var bundleClient = require('./bundle-client.js');
 var bundleMobile = require('./bundle-mobile.js');
@@ -31,6 +27,10 @@ proxy.on('error', function(e) {
   console.log('Could not connect to proxy, please try again...');
 });
 
+/* WebServer */
+app.use(express.static(__dirname + '/../client'));
+app.use('/mobile', express.static(__dirname + "/../mobile"));
+
 /* --- */
 
 http.listen(PORT, function(){
@@ -38,8 +38,24 @@ http.listen(PORT, function(){
 });
 
 /* Socket manager */
+
+var actives = {
+  //code: {client: socketclient, mobile: socketmobile}
+}
+
 io.on('connection', (socket) => {
-  socket.on('update', (val) => {
-    io.emit('update', val)
+  socket.on('generate', () => {
+    // generacodice
+    // invia codice a socket
+    // actives[code] = {client: socket}
   })
+
+  socket.on('handshake', (code) => {
+    // cellulare invia codice
+    // se actives[code]: actives[code]['mobile'] = socket
+    // invio errore/ok
+  })
+
+  socket.on('update', (v) => {socket.broadcast.emit('update', v)})
+  socket.on('gyro', (o) => {socket.broadcast.emit('gyro', o)})
 })

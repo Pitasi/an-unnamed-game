@@ -20,8 +20,12 @@
   "homepage": "https://github.com/Pitasi/final-pi#readme",
   "dependencies": {
     "express": "^4.14.0",
+    "peerjs": "^0.3.14",
+    "random-id": "0.0.2",
+    "randomcolor": "^0.4.4",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
+    "react-wakelock": "0.0.4",
     "socket.io": "^1.5.1"
   },
   "devDependencies": {
