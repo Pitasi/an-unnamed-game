@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Peer from 'peerjs'
 import randomColor from 'randomcolor'
+import randomID from 'random-id'
 
 require('../styles/main.less')
 
@@ -29,6 +30,7 @@ class Pointer extends React.Component {
   constructor(props) {
     super(props)
     /* constants */
+    this.active = true
     this.size = 50
     this.bounceSpeed = 0.96
     this.v = {x: 0, y: 0}
@@ -45,6 +47,9 @@ class Pointer extends React.Component {
       this.v.x = this.v.x + ax
       this.v.y = this.v.y + ay
     })
+
+    this.conn.on('close', () => { this.active = false })
+    this.conn.on('error', () => { this.active = false })
   }
 
   componentDidMount() {
@@ -65,7 +70,8 @@ class Pointer extends React.Component {
       this.setState({
         pos: newpos
       })
-      window.requestAnimationFrame(updateFrame.bind(this))
+
+      if (this.active) window.requestAnimationFrame(updateFrame.bind(this))
     }
     updateFrame()
   }
@@ -87,13 +93,15 @@ class Pointer extends React.Component {
 class MainContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.peer = new Peer('mainclient', {key: 'r1sjrgzh87rdx6r'})
+    this.code = randomID(3, 'a')
+    this.peer = new Peer(this.code, {key: 'r1sjrgzh87rdx6r'})
     this.state = {mobiles: [], count: 0}
     this.peer.on('connection', (conn) => {
       conn.on('open', () => {
         conn.on('close', () => {
           var newMobiles = this.state.mobiles.filter((o) => {return o.peerId !== conn.peer})
-          this.setState({ mobiles: newMobiles })
+          let count = this.state.count - 1
+          this.setState({ mobiles: newMobiles, count: count })
         })
 
         let count = this.state.count + 1
@@ -108,6 +116,7 @@ class MainContainer extends React.Component {
     })
     this.peer.on('error', (err) => { alert(err) })
 
+    alert(`Navigate to ${window.location.href}/mobile and enter '${this.code}' on your mobiles.`)
   }
 
   render() {
@@ -115,6 +124,7 @@ class MainContainer extends React.Component {
     let pointers = this.state.mobiles.map((o) => {return o.pointer})
     return (
       <div className="container">
+        <h1>Client code: {this.code}</h1>
         <h1>Players: {this.state.count}</h1>
         {buttons}
         {pointers}

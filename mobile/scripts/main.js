@@ -43,7 +43,8 @@ class MainContainer extends React.Component {
     this.peer = new Peer({key: 'r1sjrgzh87rdx6r'})
     this.peer.on('error', (err) => { alert(err) })
 
-    this.conn = this.peer.connect('mainclient') // TODO: random id
+    this.code = location.hash?location.hash.slice(1):window.prompt('Enter the code')
+    this.conn = this.peer.connect(this.code)
     this.conn.on('open', () => {
       this.conn.on('data', (o) => {
         if (o.color) this.setState({color: o.color})
