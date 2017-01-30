@@ -4,8 +4,24 @@ var express = require('express');
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var fs = require('fs');
+
+/* SSL */
+var ssl_option = {}
+try {
+  ssl_option = {
+    key: fs.readFileSync('/etc/letsencrypt/live/game.zaph.pw/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/game.zaph.pw/fullchain.pem')
+  }
+}
+catch (err) {
+  ssl_option = {
+    key: fs.readFileSync('certs/privkey.key'),
+    cert: fs.readFileSync('certs/mycert.cert')
+  }
+}
+var https = require('https').Server(ssl_option, app);
+/* */
 
 /* if not production */
 var bundleClient = require('./bundle-client.js');
@@ -15,7 +31,7 @@ bundleMobile();
 /* */
 
 var ExpressPeerServer = require('peer').ExpressPeerServer
-app.use('/peerjs', ExpressPeerServer(http))
+app.use('/peerjs', ExpressPeerServer(https))
 
 app.all('/dist/*', function (req, res) {
   proxy.web(req, res, {
@@ -37,29 +53,6 @@ app.use('/mobile', express.static(__dirname + "/../mobile"));
 
 /* --- */
 
-http.listen(PORT, function(){
+https.listen(PORT, function(){
   console.log('listening on *:'+PORT);
 });
-
-/* Socket manager */
-
-var actives = {
-  //code: {client: socketclient, mobile: socketmobile}
-}
-
-io.on('connection', (socket) => {
-  socket.on('generate', () => {
-    // generacodice
-    // invia codice a socket
-    // actives[code] = {client: socket}
-  })
-
-  socket.on('handshake', (code) => {
-    // cellulare invia codice
-    // se actives[code]: actives[code]['mobile'] = socket
-    // invio errore/ok
-  })
-
-  socket.on('update', (v) => {socket.broadcast.emit('update', v)})
-  socket.on('gyro', (o) => {socket.broadcast.emit('gyro', o)})
-})
