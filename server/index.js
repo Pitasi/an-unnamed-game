@@ -12,6 +12,7 @@ var bundleClient = require('./bundle-client.js');
 var bundleMobile = require('./bundle-mobile.js');
 bundleClient();
 bundleMobile();
+/* */
 
 app.all('/dist/*', function (req, res) {
   proxy.web(req, res, {

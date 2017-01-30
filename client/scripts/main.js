@@ -116,7 +116,6 @@ class MainContainer extends React.Component {
     })
     this.peer.on('error', (err) => { alert(err) })
 
-    alert(`Navigate to ${window.location.href}/mobile and enter '${this.code}' on your mobiles.`)
   }
 
   render() {
@@ -124,8 +123,8 @@ class MainContainer extends React.Component {
     let pointers = this.state.mobiles.map((o) => {return o.pointer})
     return (
       <div className="container">
-        <h1>Client code: {this.code}</h1>
         <h1>Players: {this.state.count}</h1>
+        <p>Your code is: {this.code}, open http:\/\/game.zaph.pw/mobile and enter it.</p>
         {buttons}
         {pointers}
       </div>
