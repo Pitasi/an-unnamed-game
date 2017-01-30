@@ -14,6 +14,12 @@ bundleClient();
 bundleMobile();
 /* */
 
+app.all('/peerjs', (req, res) => {
+  proxy.web(req, res, {
+      target: 'http://localhost:9000'
+  });
+})
+
 app.all('/dist/*', function (req, res) {
   proxy.web(req, res, {
       target: 'http://localhost:49152'

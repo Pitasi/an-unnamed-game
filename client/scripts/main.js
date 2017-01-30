@@ -94,7 +94,7 @@ class MainContainer extends React.Component {
   constructor(props) {
     super(props);
     this.code = randomID(3, 'a')
-    this.peer = new Peer(this.code, {key: 'r1sjrgzh87rdx6r'})
+    this.peer = new Peer(this.code, {host: 'game.zaph.pw', port: 9000, path: '/peerjs'})
     this.state = {mobiles: [], count: 0}
     this.peer.on('connection', (conn) => {
       conn.on('open', () => {
@@ -124,7 +124,7 @@ class MainContainer extends React.Component {
     return (
       <div className="container">
         <h1>Players: {this.state.count}</h1>
-        <p>Your code is: {this.code}, open http:\/\/game.zaph.pw/mobile and enter it.</p>
+        <p>Your code is: <b>{this.code}</b>, open <b>http://game.zaph.pw/mobile</b> and enter it.</p>
         {buttons}
         {pointers}
       </div>
