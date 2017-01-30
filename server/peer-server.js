@@ -10,4 +10,4 @@ var PeerServer = peer.PeerServer({
   proxied: true
 });
 
-server.on('connection', (id) => {console.log(`New connection. Id: ${id}`)})
+PeerServer.on('connection', (id) => {console.log(`New connection. Id: ${id}`)})
