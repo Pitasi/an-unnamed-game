@@ -84,7 +84,7 @@ class MainContainer extends React.Component {
   constructor(props) {
     super(props);
     this.code = randomID(3, 'a')
-    this.peer = new Peer(this.code, {host: location.hostname, secure: true, port: 3000, path: '/peerjs'})
+    this.peer = new Peer(this.code, {host: location.hostname, port: 3000, secure: true, path: '/peerjs'})
     this.state = {mobiles: [], count: 0}
     this.peer.on('connection', (conn) => {
       conn.on('open', () => {

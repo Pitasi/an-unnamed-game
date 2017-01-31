@@ -5,42 +5,12 @@ import Peer from 'peerjs'
 
 require('../styles/main.less');
 
-class Square extends React.Component {
-  constructor(props) {
-    super(props)
-    this.conn = props.conn
-    this.state = {active: false}
-  }
-
-  changeState(arg) {
-    let newstate = arg.type === 'touchstart'
-    navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-    if (navigator.vibrate && newstate) {
-      navigator.vibrate(50);
-    }
-    this.conn.send({type: 'btn', val: newstate})
-    this.setState({active: newstate})
-
-
-  }
-
-  render() {
-    let classes = `button ${this.state.active?'on':'off'}`
-    return (
-      <div className={classes}
-        onTouchStart={this.changeState.bind(this)}
-        onTouchEnd={this.changeState.bind(this)}>
-      </div>
-    );
-  }
-}
-
 class MainContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {color: 'white'}
 
-    this.peer = new Peer({host: location.hostname, secure: true, port: 3000, path: '/peerjs'})
+    this.peer = new Peer({host: location.hostname, port: 3000, secure: true, path: '/peerjs'})
     this.peer.on('error', (err) => { alert(err) })
 
     this.code = location.hash?location.hash.slice(1):window.prompt('Enter the code')

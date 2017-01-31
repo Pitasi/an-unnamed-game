@@ -35,12 +35,12 @@ app.use('/peerjs', ExpressPeerServer(https))
 
 app.all('/dist/*', function (req, res) {
   proxy.web(req, res, {
-      target: 'http://localhost:49152'
+      target: 'https://localhost:49152'
   });
 });
 app.all('/mobile/dist/*', function (req, res) {
   proxy.web(req, res, {
-      target: 'http://localhost:49153'
+      target: 'https://localhost:49153'
   });
 });
 proxy.on('error', function(e) {
