@@ -1,14 +1,20 @@
-.on, .off {
-  height: 100%;
-  width:100%;
-}
+.infobox {
+  @margin: 10px;
+  @animation: opacity .25s ease-in-out;
 
-.on {
-  background-color: green;
-}
+  position: absolute;
+  bottom: @margin;
+  right: @margin;
+  float: right;
+  text-align: right;
+  opacity: 0.3;
+  transition: @animation;
+  -moz-transition: @animation;
+  -webkit-transition: @animation;
 
-.off {
-  background-color: lighten(green, 70%);
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 .ball {
