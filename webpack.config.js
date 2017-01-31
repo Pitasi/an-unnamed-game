@@ -1,16 +1,18 @@
+var webpack = require('webpack');
+var CompressionPlugin = require("compression-webpack-plugin");
 var path = require('path');
 
-var entryFile = path.resolve(__dirname, '..', 'mobile', 'scripts', 'main.js');
-var outFolder = path.resolve(__dirname, '..', 'mobile', 'dist');
+var outFolder = path.resolve(__dirname, 'dist');
 
 module.exports = {
   devtool: 'eval',
-  entry: [
-    entryFile],
+  entry: {
+    client: './client' + '/scripts' + '/main.js',
+    mobile: './mobile' + '/scripts' + '/main.js'
+  },
   output: {
     path: outFolder,
-    filename: 'bundle.js',
-    publicPath: '/dist/'
+    filename: '[name].min.js'
   },
   module: {
     loaders: [
@@ -27,5 +29,8 @@ module.exports = {
         loader: 'style-loader!css-loader!less-loader'
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin()
+  ]
 }

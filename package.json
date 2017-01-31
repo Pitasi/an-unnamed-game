@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build && node server",
-    "build": "npm run build-client && npm run build-mobile",
-    "build-client": "webpack --config webpack/client.js",
-    "build-mobile": "webpack --config webpack/mobile.js",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +19,7 @@
   },
   "homepage": "https://github.com/Pitasi/final-pi#readme",
   "dependencies": {
+    "compression": "^1.6.2",
     "express": "^4.14.0",
     "peer": "^0.2.8",
     "peerjs": "^0.3.14",
@@ -29,8 +28,7 @@
     "randomcolor": "^0.4.4",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
-    "react-wakelock": "0.0.4",
-    "socket.io": "^1.5.1"
+    "react-wakelock": "0.0.4"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
@@ -42,7 +40,6 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.16.2"
+    "webpack": "^1.13.3"
   }
 }

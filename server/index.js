@@ -2,6 +2,8 @@ const PORT = 3000;
 
 var express = require('express');
 var app = express();
+var compress = require('compression');
+app.use(compress());
 var fs = require('fs');
 
 /* SSL */
@@ -27,7 +29,9 @@ app.use('/peerjs', ExpressPeerServer(https))
 
 /* WebServer */
 app.use(express.static(__dirname + '/../client'));
+app.use('/dist/bundle.js', express.static(__dirname + '/../dist/client.min.js'))
 app.use('/mobile', express.static(__dirname + "/../mobile"));
+app.use('/mobile/dist/bundle.js', express.static(__dirname + '/../dist/mobile.min.js'))
 /* --- */
 
 https.listen(PORT, function(){
