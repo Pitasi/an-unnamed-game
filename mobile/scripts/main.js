@@ -40,7 +40,7 @@ class MainContainer extends React.Component {
     super(props)
     this.state = {color: 'white'}
 
-    this.peer = new Peer({host: location.hostname, port: 3000, path: '/peerjs'})
+    this.peer = new Peer({host: location.hostname, secure: true, port: 3000, path: '/peerjs'})
     this.peer.on('error', (err) => { alert(err) })
 
     this.code = location.hash?location.hash.slice(1):window.prompt('Enter the code')

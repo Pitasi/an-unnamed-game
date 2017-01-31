@@ -1,40 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import QRCode from 'qrcode.react'
+
 import Peer from 'peerjs'
+
 import randomColor from 'randomcolor'
 import randomID from 'random-id'
 
 require('../styles/main.less')
 
-class Square extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {active: false}
-    this.mobiles = props.mobiles
-
-    for (var i in this.mobiles)
-      this.mobiles[i].on('data', (o) => {
-        if (o.type !== 'btn') return
-        this.setState({active: o.val})
-      })
-  }
-
-  render() {
-    return (
-      <div className={this.state.active?'on':'off'}></div>
-    );
-  }
-}
-
-class Pointer extends React.Component {
+class Ball extends React.Component {
   constructor(props) {
     super(props)
     /* constants */
-    this.active = true
     this.size = 50
     this.bounceSpeed = 0.96
     this.v = {x: 0, y: 0}
-    this.state = {pos: {x: 0, y: 0}}
+    this.state = {pos: {x: 0, y: 0}, active: true}
 
     this.conn = props.conn
     this.color = randomColor()
@@ -48,8 +30,12 @@ class Pointer extends React.Component {
       this.v.y = this.v.y + ay
     })
 
-    this.conn.on('close', () => { this.active = false })
-    this.conn.on('error', () => { this.active = false })
+    var deactive = () => {
+      this.setState({active: false})
+      this.props.statehandler()
+    }
+    this.conn.on('close', () => { deactive() })
+    this.conn.on('error', () => { deactive() })
   }
 
   componentDidMount() {
@@ -76,17 +62,21 @@ class Pointer extends React.Component {
     updateFrame()
   }
 
+  isActive() { return this.state.active }
+
   render() {
-    return (
-      <div style={{
-              background: this.color,
-              height: this.size,
-              width: this.size,
-              left: this.state.pos.x + 'px',
-              top: this.state.pos.y + 'px'
-            }}
-           className="pointer"></div>
-    )
+    let el = this.state.active ?
+             <div style={{
+               background: this.color,
+               height: this.size,
+               width: this.size,
+               left: this.state.pos.x + 'px',
+               top: this.state.pos.y + 'px'
+             }}
+             className="ball"></div> :
+             null
+
+    return el
   }
 }
 
@@ -94,39 +84,42 @@ class MainContainer extends React.Component {
   constructor(props) {
     super(props);
     this.code = randomID(3, 'a')
-    this.peer = new Peer(this.code, {host: location.hostname, port: 3000, path: '/peerjs'})
+    this.peer = new Peer(this.code, {host: location.hostname, secure: true, port: 3000, path: '/peerjs'})
     this.state = {mobiles: [], count: 0}
     this.peer.on('connection', (conn) => {
       conn.on('open', () => {
         conn.on('close', () => {
           var newMobiles = this.state.mobiles.filter((o) => {return o.peerId !== conn.peer})
-          let count = this.state.count - 1
-          this.setState({ mobiles: newMobiles, count: count })
         })
 
-        let count = this.state.count + 1
         let newMobiles = this.state.mobiles.slice(0)
         newMobiles.push({
           peerId: conn.peer,
-          button: <Square key={conn.peer} conn={conn} />,
-          pointer: <Pointer key={conn.peer} conn={conn} />
+          ball: <Ball key={conn.peer} statehandler={this.ballRemoved.bind(this)} conn={conn} />
         })
-        this.setState({ mobiles: newMobiles, count: count })
+        this.setState({ mobiles: newMobiles, count: this.state.count+1 })
       })
     })
     this.peer.on('error', (err) => { alert(err) })
+  }
 
+  ballRemoved(b) {
+    let newCount = this.state.count -1
+    this.setState({count: newCount})
   }
 
   render() {
-    let buttons = this.state.mobiles.map((o) => {return o.button})
-    let pointers = this.state.mobiles.map((o) => {return o.pointer})
+    let balls = this.state.mobiles.map((o) => {return o.ball})
     return (
       <div className="container">
-        <h1>Players: {this.state.count}</h1>
-        <p>Your code is: <b>{this.code}</b>, open <b>http://game.zaph.pw/mobile</b> and enter it.</p>
-        {buttons}
-        {pointers}
+        <div className="infobox">
+          <h1>Players: {this.state.count}</h1>
+          <a href={`https://${location.host}/mobile/#${this.code}`} target="_blank">
+            <QRCode value={`https://${location.host}/mobile/#${this.code}`} /> <br />
+            {`https://${location.host}/mobile/#${this.code}`}
+          </a>
+        </div>
+        {balls}
       </div>
     )
   }
