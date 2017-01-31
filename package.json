@@ -4,8 +4,10 @@
   "description": "Progetto per Programmazione di Interfacce @ UniPi.",
   "main": "index.js",
   "scripts": {
-    "start": "node server",
-    "build": "npm start && webpack --watch",
+    "start": "npm run build && node server",
+    "build": "npm run build-client && npm run build-mobile",
+    "build-client": "webpack --config webpack/client.js",
+    "build-mobile": "webpack --config webpack/mobile.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

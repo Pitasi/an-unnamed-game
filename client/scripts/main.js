@@ -57,7 +57,7 @@ class Ball extends React.Component {
         pos: newpos
       })
 
-      if (this.active) window.requestAnimationFrame(updateFrame.bind(this))
+      if (this.state.active) window.requestAnimationFrame(updateFrame.bind(this))
     }
     updateFrame()
   }
