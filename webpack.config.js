@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-var CompressionPlugin = require("compression-webpack-plugin");
 var path = require('path');
 
 var outFolder = path.resolve(__dirname, 'dist');
