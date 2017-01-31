@@ -16,7 +16,10 @@ class Ball extends React.Component {
     this.size = 50
     this.bounceSpeed = 0.96
     this.v = {x: 0, y: 0}
-    this.state = {pos: {x: 0, y: 0}, active: true}
+    this.state = {
+      pos: {x: (window.innerWidth-this.size)/2, y: (window.innerHeight-this.size)/2},
+      active: true
+    }
 
     this.conn = props.conn
     this.color = randomColor()
