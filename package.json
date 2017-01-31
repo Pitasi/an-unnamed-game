@@ -4,7 +4,9 @@
   "description": "Progetto per Programmazione di Interfacce @ UniPi.",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node server",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:dev": "npm run build && npm run start:prod",
+    "start:prod": "node server",
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,6 +23,7 @@
   "dependencies": {
     "compression": "^1.6.2",
     "express": "^4.14.0",
+    "if-env": "^1.0.0",
     "peer": "^0.2.8",
     "peerjs": "^0.3.14",
     "qrcode.react": "^0.6.1",
