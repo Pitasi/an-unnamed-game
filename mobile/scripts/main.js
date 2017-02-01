@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import WakeLock from 'react-wakelock';
 import Peer from 'peerjs'
 
 require('../styles/main.less');
@@ -8,7 +7,7 @@ require('../styles/main.less');
 class MainContainer extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {color: 'white'}
+    this.state = {color: 'white', on: false}
 
     this.peer = new Peer({host: location.hostname, port: 3000, secure: true, path: '/peerjs'})
     this.peer.on('error', (err) => { alert(err) })
@@ -21,21 +20,39 @@ class MainContainer extends React.Component {
       })
     })
 
+    this.gyro = {x: 0, y: 0}
     if (window.DeviceMotionEvent) {
     	window.addEventListener('devicemotion', (e) => {
-        this.conn.send({
-          type: 'gyro',
-          x: event.accelerationIncludingGravity.x,
-          y: event.accelerationIncludingGravity.y
-        })
+        this.gyro = e.accelerationIncludingGravity
     	}, true)
     }
+
+    setInterval(() => {
+      if (this.state.on)
+        this.conn.send({
+          type: 'gyro',
+          x: this.gyro.x || 0,
+          y: this.gyro.y || 0
+        })
+    }, 30)
   }
+
+  touchEventHandler(e) { this.setState({on: e.type === 'touchstart'}) }
 
   render() {
     return (
-      <div className="container" style={{background: this.state.color}}>
-        <WakeLock />
+      <div className="container"
+           style={{background: this.state.color,}}
+           >
+           <div style={{
+                  width: '100%',
+                  height: '100%',
+                  background: this.state.on?'rgba(255,255,255,0)':'rgba(255,255,255,0.5)'
+                }}
+                onTouchStart={this.touchEventHandler.bind(this)}
+                onTouchEnd={this.touchEventHandler.bind(this)}
+             >
+           </div>
       </div>
     )
   }

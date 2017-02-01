@@ -26,6 +26,7 @@ class MainContainer extends React.Component {
     this.peer.on('connection', (conn) => {
       conn.on('open', () => {
         this.createBall(conn)
+        conn.on('error', (e) => {console.error(e)})
       })
     })
     this.peer.on('error', (err) => { alert(err) })

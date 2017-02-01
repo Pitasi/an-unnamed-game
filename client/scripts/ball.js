@@ -23,14 +23,10 @@ function Ball (props) {
         ay = - o.y * 5;
     this.v.x = this.v.x + ax
     this.v.y = this.v.y + ay
-    this.lastUpdate = + new Date()
   })
   var deactive = () => {
     this.active = false
   }
-  setInterval(() => {
-    if (new Date() - this.lastUpdate > 2500) deactive();
-  }, 500)
   this.conn.on('close', () => { deactive() })
   this.conn.on('error', () => { deactive() })
 
@@ -44,14 +40,14 @@ function Ball (props) {
       x: parseInt(this.pos.x + this.v.x / this.mass)
     }
 
-    if (newpos.x<0) { newpos.x = 0; this.v.x = -this.v.x }
-    if (newpos.y<0) { newpos.y = 0; this.v.y = -this.v.y }
-    if (newpos.x>document.documentElement.clientWidth-this.mass-this.padding) {
-      newpos.x = document.documentElement.clientWidth-this.mass-this.padding
+    if (newpos.x - this.getRadius() < 0) { newpos.x = this.getRadius(); this.v.x = -this.v.x }
+    if (newpos.y - this.getRadius() < 0) { newpos.y = this.getRadius(); this.v.y = -this.v.y }
+    if (newpos.x + this.getRadius() > document.documentElement.clientWidth) {
+      newpos.x = document.documentElement.clientWidth-this.getRadius()
       this.v.x = -this.v.x
     }
-    if (newpos.y>document.documentElement.clientHeight-this.mass-this.padding) {
-      newpos.y = document.documentElement.clientHeight-this.mass-this.padding
+    if (newpos.y + this.getRadius() > document.documentElement.clientHeight) {
+      newpos.y = document.documentElement.clientHeight-this.getRadius()
       this.v.y = -this.v.y
     }
 
@@ -63,13 +59,9 @@ function Ball (props) {
     this.v.y = - this.v.y
   }
 
-  this.getRadius = () => { return (this.mass + this.padding)/2 } // TODO: 12 is padding + border, find a way to remove that
-  this.getCenter = () => {
-    return {
-      x: this.pos.x + (this.mass+this.padding)/2,
-      y: this.pos.y + (this.mass+this.padding)/2
-    }
-  }
+  this.getSize = () => { return this.mass + this.padding }
+  this.getRadius = () => { return this.getSize()/2 }
+  this.getCenter = () => { return this.pos }
 }
 
 function BallComponent (props) {
@@ -79,6 +71,8 @@ function BallComponent (props) {
     width: props.ball.mass,
     left: props.ball.pos.x + 'px',
     top: props.ball.pos.y + 'px',
+    marginLeft: -props.ball.getSize()/2,
+    marginTop: -props.ball.getSize()/2,
     zIndex: props.ball.mass
   }}
   className="ball"></div>)
