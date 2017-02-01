@@ -1,12 +1,13 @@
 import React from 'react'
 import randomColor from 'randomcolor'
+require('../styles/ball.less')
 
 function Ball (props) {
   this.active = true
-  this.size = 50
+  this.size = 30
   this.bounceSpeed = 0.96
   this.v = { x: 0, y: 0 }
-  this.pos = { x: 0, y: 0 }
+  this.pos = { x: (window.innerWidth-this.size)/2, y: (window.innerHeight-this.size)/2 }
   this.conn = props.conn
   this.color = randomColor()
   this.conn.send({color: this.color})
