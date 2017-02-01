@@ -25,7 +25,7 @@
     "express": "^4.14.0",
     "if-env": "^1.0.0",
     "peer": "^0.2.8",
-    "peerjs": "^0.3.14",
+    "peerjs": "git@github.com:Pitasi/peerjs.git",
     "qrcode.react": "^0.6.1",
     "random-id": "0.0.2",
     "randomcolor": "^0.4.4",
