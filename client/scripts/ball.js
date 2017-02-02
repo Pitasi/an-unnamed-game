@@ -3,6 +3,7 @@ import randomColor from 'randomcolor'
 require('../styles/ball.less')
 
 function Ball (props) {
+  this.player = props.player // difference between food and players
   this.active = true
   this.mass = 30
   this.newMass = this.mass
@@ -13,23 +14,26 @@ function Ball (props) {
     x: Math.floor(Math.random()*((window.innerWidth-this.mass)+1)),
     y: Math.floor(Math.random()*((window.innerHeight-this.mass)+1)),
   }
-  this.conn = props.conn
-  this.color = randomColor()
-  this.conn.send({color: this.color})
+  this.color = this.player ? randomColor() : '#76FF03'
 
-  // executed when created
-  this.conn.on('data', (o) => {
-    if (o.type !== 'gyro') return
-    let ax = - o.x * 5,
-        ay = - o.y * 5;
-    this.v.x = this.v.x + ax
-    this.v.y = this.v.y + ay
-  })
-  var deactive = () => {
-    this.active = false
+  if (this.player) {
+    this.conn = props.conn
+    this.conn.send({color: this.color})
+
+    // executed when created
+    this.conn.on('data', (o) => {
+      if (o.type !== 'gyro') return
+      let ax = - o.x * 5,
+          ay = - o.y * 5;
+      this.v.x = this.v.x + ax
+      this.v.y = this.v.y + ay
+    })
+    var deactive = () => {
+      this.active = false
+    }
+    this.conn.on('close', () => { deactive() })
+    this.conn.on('error', () => { deactive() })
   }
-  this.conn.on('close', () => { deactive() })
-  this.conn.on('error', () => { deactive() })
 
   // methods
   this.updatePosition = () => {

@@ -14,6 +14,7 @@ class MainContainer extends React.Component {
   constructor(props) {
     super(props);
     this.balls = []
+    this.food = []
     this.state = {ballComponents: []}
 
     this.code = randomID(3, 'a')
@@ -31,20 +32,26 @@ class MainContainer extends React.Component {
     })
     this.peer.on('error', (err) => { alert(err) })
 
-    for (var i = 0; i < 10; i++) {
-      let debugBall = new Ball({conn: {peer: 'debug'+i, send:() => {}, on: () => {}}})
-      debugBall.color = 'black'
-      debugBall.mass = 10
-      this.balls.push(debugBall)
-    }
+    setInterval(this.spawnFoods.bind(this), 3000)
   }
 
   createBall(conn) {
-    this.balls.push(new Ball({conn: conn}))
+    this.balls.push(new Ball({player: true, conn: conn}))
   }
 
   deleteInactiveBalls() {
     this.balls = this.balls.filter((b) => {return b.active})
+    this.food = this.food.filter((b) => {return b.active})
+  }
+
+  spawnFoods() {
+    let maxFood = 10
+    if (this.food.length == maxFood) return
+    for (var i = 0; i < maxFood - this.food.length; i++) {
+      let f = new Ball({player: false})
+      f.mass = 10
+      this.food.push(f)
+    }
   }
 
   checkCollision(b1, b2) {
@@ -78,15 +85,23 @@ class MainContainer extends React.Component {
     for (var i in this.balls)
       this.balls[i].updatePosition()
 
-    for (var i = 0; i < this.balls.length-1; i++)
-      for (var j = i + 1; j < this.balls.length; j++)
-        this.checkCollision(this.balls[i], this.balls[j])
-
+    let foodAndBalls = this.food.concat(this.balls)
+    for (var i = 0; i < foodAndBalls.length-1; i++)
+      for (var j = i + 1; j < foodAndBalls.length; j++)
+        this.checkCollision(foodAndBalls[i], foodAndBalls[j])
 
     let ballComponents = this.balls.map((b) => {
       return <BallComponent ball={b} key={b.conn.peer} />
     })
-    this.setState({ballComponents: ballComponents})
+
+    let foodComponents = this.food.map((b, i) => {
+      return <BallComponent ball={b} key={'food'+i} />
+    })
+
+    this.setState({
+      ballComponents: ballComponents,
+      foodComponents: foodComponents
+    })
     window.requestAnimationFrame(this.gameLoop.bind(this))
   }
 
@@ -105,6 +120,7 @@ class MainContainer extends React.Component {
           </a>
         </div>
         {this.state.ballComponents}
+        {this.state.foodComponents}
       </div>
     )
   }
