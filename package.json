@@ -4,10 +4,9 @@
   "description": "Progetto per Programmazione di Interfacce @ UniPi.",
   "main": "index.js",
   "scripts": {
-    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:dev": "npm run build && npm run start:prod",
-    "start:prod": "node server",
-    "start:watch": "webpack --watch & npm start --prod",
+    "start": "if-env NODE_ENV=production && npm run start:server || npm run start:dev",
+    "start:dev": "webpack --watch & npm run start:server",
+    "start:server": "node server",
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

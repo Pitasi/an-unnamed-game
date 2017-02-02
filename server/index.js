@@ -8,18 +8,18 @@ var fs = require('fs');
 
 /* SSL */
 var ssl_option = {}
-try {
-  ssl_option = {
-    key: fs.readFileSync('/etc/letsencrypt/live/game.zaph.pw/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/game.zaph.pw/fullchain.pem')
-  }
-}
-catch (err) {
-  // Fallback to a self-signed cert
-  ssl_option = {
-    key: fs.readFileSync('certs/privkey.key'),
-    cert: fs.readFileSync('certs/mycert.cert')
-  }
+switch (process.env.NODE_ENV) {
+  case 'production':
+    ssl_option = {
+      key: fs.readFileSync('/etc/letsencrypt/live/game.zaph.pw/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/game.zaph.pw/fullchain.pem')
+    }
+    break
+  default:
+    ssl_option = {
+      key: fs.readFileSync('certs/privkey.key'),
+      cert: fs.readFileSync('certs/mycert.cert')
+    }
 }
 var https = require('https').Server(ssl_option, app);
 /* */
