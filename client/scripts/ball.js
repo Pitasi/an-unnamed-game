@@ -73,7 +73,6 @@ function Ball (props) {
     var step = () => {
       if (this.mass < this.newMass) {
         this.mass++
-        console.log(this.mass)
         window.requestAnimationFrame(step)
       }
     }
