@@ -70,7 +70,6 @@ function Ball (props) {
 
   this.setMass = (deltaMass) => {
     this.newMass += deltaMass
-
     var step = () => {
       if (this.mass < this.newMass) {
         this.mass++
@@ -79,6 +78,7 @@ function Ball (props) {
       }
     }
     window.requestAnimationFrame(step)
+    this.conn.send({mass: this.newMass})
   }
 }
 

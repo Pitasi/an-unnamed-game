@@ -1,11 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
 html, body, #main-wrapper {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  .noselect;
 }
 
 .container {
   height: 100%;
   width: 100%;
+}
+
+.text-shadow-3d(@color, @index) when (@index > 0) {
+    .text-shadow-3d(@color, @index - 1);
+    text-shadow+: 1px*@index 1px*@index 0 @color;
+}
+
+.info {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  text-align: center;
+  align-items:center;
+
+  &:before {
+    content:'';
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  div {
+    width: 100%;
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    .text-shadow-3d(lighten(black, 30%), 7);
+  }
 }

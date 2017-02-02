@@ -13,6 +13,10 @@ require('../styles/main.less')
 class MainContainer extends React.Component {
   constructor(props) {
     super(props);
+
+    var audio = new Audio('../sound/welcome.mp3');
+    audio.play();
+
     this.balls = []
     this.food = []
     this.state = {ballComponents: []}

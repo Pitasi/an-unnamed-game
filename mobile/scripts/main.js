@@ -1,13 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import ReactFitText from 'react-fittext'
 import Peer from 'peerjs'
 
-require('../styles/main.less');
+require('../styles/main.less')
 
 class MainContainer extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {color: 'white', on: false}
+    this.state = {
+      color: false,
+      mass: 30,
+      on: false
+    }
+
+    this.levelup = new Audio('sound/levelup.mp3')
+    this.blank = new Audio('sound/blank.mp3')
 
     this.peer = new Peer({host: location.hostname, port: 3000, secure: true, path: '/peerjs'})
     this.peer.on('error', (err) => { alert(err) })
@@ -17,6 +25,11 @@ class MainContainer extends React.Component {
     this.conn.on('open', () => {
       this.conn.on('data', (o) => {
         if (o.color) this.setState({color: o.color})
+        else if (o.mass) {
+          this.levelup.pause()
+          this.levelup.play()
+          this.setState({mass: o.mass})
+        }
       })
     })
 
@@ -37,21 +50,44 @@ class MainContainer extends React.Component {
     }, 30)
   }
 
-  touchEventHandler(e) { this.setState({on: e.type === 'touchstart'}) }
+  touchEventHandler(e) {
+    // fix for mobile audio
+    if (!this.firstTime) {
+      this.levelup.play()
+      this.levelup.pause()
+      this.firstTime = true
+    }
+    this.setState({on: e.type === 'touchstart'})
+  }
 
   render() {
+    let textComp = this.state.color ?
+                    <div>
+                      <ReactFitText compressor={1}>
+                        <h1>Tap here to rush!</h1>
+                      </ReactFitText>
+                      <ReactFitText compressor={1}>
+                        <h1>Level: {this.state.mass}</h1>
+                      </ReactFitText>
+                    </div>:
+                    <ReactFitText>
+                      <span>Connecting to server...</span>
+                    </ReactFitText>
+
+
     return (
       <div className="container"
-           style={{background: this.state.color,}}
-           >
+           style={{background: this.state.color,}}>
            <div style={{
                   width: '100%',
                   height: '100%',
                   background: this.state.on?'rgba(255,255,255,0)':'rgba(255,255,255,0.5)'
                 }}
                 onTouchStart={this.touchEventHandler.bind(this)}
-                onTouchEnd={this.touchEventHandler.bind(this)}
-             >
+                onTouchEnd={this.touchEventHandler.bind(this)}>
+                <div className="info">
+                    {textComp}
+                </div>
            </div>
       </div>
     )
