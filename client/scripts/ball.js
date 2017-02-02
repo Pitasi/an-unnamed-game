@@ -5,6 +5,7 @@ require('../styles/ball.less')
 function Ball (props) {
   this.active = true
   this.mass = 30
+  this.newMass = this.mass
   this.friction = 0.96
   this.padding = 12
   this.v = { x: 0, y: 0 }
@@ -62,6 +63,19 @@ function Ball (props) {
   this.getSize = () => { return this.mass + this.padding }
   this.getRadius = () => { return this.getSize()/2 }
   this.getCenter = () => { return this.pos }
+
+  this.setMass = (deltaMass) => {
+    this.newMass += deltaMass
+
+    var step = () => {
+      if (this.mass < this.newMass) {
+        this.mass++
+        console.log(this.mass)
+        window.requestAnimationFrame(step)
+      }
+    }
+    window.requestAnimationFrame(step)
+  }
 }
 
 function BallComponent (props) {

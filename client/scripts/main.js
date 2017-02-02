@@ -48,13 +48,13 @@ class MainContainer extends React.Component {
   }
 
   checkCollision(b1, b2) {
-    if (b1.mass == b2.mass) return
     if (b2.mass > b1.mass) {
       let tmp = b1
       b1 = b2
       b2 = tmp
     }
     // b1 is the biggest ball now
+    if (b1.mass < b2.mass+b2.mass*0.25) return
 
     let c1 = b1.getCenter(),
         c2 = b2.getCenter()
@@ -67,7 +67,7 @@ class MainContainer extends React.Component {
     let d = Math.sqrt(x*x + y*y)
     if (d < r1) {
       // b1 eats b2
-      b1.mass = b1.mass + b2.mass
+      b1.setMass(b2.mass/2)
       b2.active = false
     }
   }
