@@ -5,14 +5,14 @@ require('../styles/ball.less')
 function Ball (props) {
   this.player = props.player // difference between food and players
   this.active = true
-  this.mass = 30
+  this.mass = this.player ? 30 : 10
+  this.padding = 12
   this.newMass = this.mass
   this.friction = 0.96
-  this.padding = 12
   this.v = { x: 0, y: 0 }
   this.pos = {
-    x: Math.floor(Math.random()*((window.innerWidth-this.mass)+1)),
-    y: Math.floor(Math.random()*((window.innerHeight-this.mass)+1)),
+    x: Math.floor(Math.random()*((window.innerWidth-this.mass-this.padding)+this.mass+this.padding)),
+    y: Math.floor(Math.random()*((window.innerHeight-this.mass-this.padding)+this.mass+this.padding)),
   }
   this.color = this.player ? randomColor() : '#76FF03'
 

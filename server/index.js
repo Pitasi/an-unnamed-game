@@ -5,6 +5,7 @@ var app = express();
 var compress = require('compression');
 app.use(compress());
 var fs = require('fs');
+var path = require('path');
 
 /* SSL */
 var ssl_option = {}
@@ -28,10 +29,27 @@ var ExpressPeerServer = require('peer').ExpressPeerServer
 app.use('/peerjs', ExpressPeerServer(https))
 
 /* WebServer */
-app.use(express.static(__dirname + '/../client'));
-app.use('/dist/bundle.js', express.static(__dirname + '/../dist/client.min.js'))
-app.use('/mobile', express.static(__dirname + "/../mobile"));
-app.use('/mobile/dist/bundle.js', express.static(__dirname + '/../dist/mobile.min.js'))
+app.use('/favicon.ico', express.static(path.resolve('dist/assets/favicon.ico')))
+app.use('/assets', express.static(path.resolve('dist/assets')))
+
+app.get('/', (req, res) => {
+  // https://gist.github.com/christopherdebeer/1200142
+  var ua = req.header('user-agent');
+  if(/mobile/i.test(ua)) {
+    res.sendFile(path.resolve('dist/mobile/index.html'))
+  } else {
+    res.sendFile(path.resolve('dist/desktop/index.html'))
+  }
+})
+
+app.get('/bundle.min.js', (req, res) => {
+  var ua = req.header('user-agent');
+  if(/mobile/i.test(ua)) {
+    res.sendFile(path.resolve('dist/mobile/bundle.min.js'))
+  } else {
+    res.sendFile(path.resolve('dist/desktop/bundle.min.js'))
+  }
+})
 /* --- */
 
 https.listen(PORT, function(){

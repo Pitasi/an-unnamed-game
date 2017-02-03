@@ -8,14 +8,15 @@ import randomID from 'random-id'
 import {Ball, BallComponent} from './ball.js'
 
 require('../styles/main.less')
-
+var audio = {
+  welcome: new Audio(require('../sound/welcome.mp3'))
+}
 
 class MainContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    var audio = new Audio('../sound/welcome.mp3');
-    audio.play();
+    audio.welcome.play()
 
     this.balls = []
     this.food = []
@@ -36,6 +37,7 @@ class MainContainer extends React.Component {
     })
     this.peer.on('error', (err) => { alert(err) })
 
+    this.spawnFoods()
     setInterval(this.spawnFoods.bind(this), 3000)
   }
 
@@ -51,10 +53,10 @@ class MainContainer extends React.Component {
   spawnFoods() {
     let maxFood = 10
     if (this.food.length == maxFood) return
-    for (var i = 0; i < maxFood - this.food.length; i++) {
-      let f = new Ball({player: false})
-      f.mass = 10
-      this.food.push(f)
+
+    let missing = maxFood - this.food.length
+    for (var i = 0; i < missing; i++) {
+      this.food.push(new Ball({player: false}))
     }
   }
 
@@ -86,8 +88,7 @@ class MainContainer extends React.Component {
   gameLoop() {
     this.deleteInactiveBalls()
 
-    for (var i in this.balls)
-      this.balls[i].updatePosition()
+    this.balls.forEach((b) => {b.updatePosition()})
 
     let foodAndBalls = this.food.concat(this.balls)
     for (var i = 0; i < foodAndBalls.length-1; i++)

@@ -6,12 +6,12 @@ var outFolder = path.resolve(__dirname, 'dist');
 module.exports = {
   devtool: 'eval',
   entry: {
-    client: './client' + '/scripts' + '/main.js',
-    mobile: './mobile' + '/scripts' + '/main.js'
+    desktop: './desktop/scripts/main.js',
+    mobile: './mobile/scripts/main.js'
   },
   output: {
     path: outFolder,
-    filename: '[name].min.js'
+    filename: '[name]/bundle.min.js'
   },
   module: {
     loaders: [
@@ -26,6 +26,10 @@ module.exports = {
       {
         test: /\.less$/,
         loader: 'style-loader!css-loader!less-loader'
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader?name=assets/[name].[ext]'
       }
     ]
   },

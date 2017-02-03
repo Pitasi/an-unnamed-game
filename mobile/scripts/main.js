@@ -1,10 +1,16 @@
+/* Modules */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactFitText from 'react-fittext'
 import Peer from 'peerjs'
 
+/* Assets */
 require('../styles/main.less')
+var audio = {
+  levelup: new Audio(require('../sound/levelup.mp3'))
+}
 
+/* React components */
 class MainContainer extends React.Component {
   constructor(props) {
     super(props)
@@ -13,9 +19,6 @@ class MainContainer extends React.Component {
       mass: 30,
       on: false
     }
-
-    this.levelup = new Audio('sound/levelup.mp3')
-    this.blank = new Audio('sound/blank.mp3')
 
     this.peer = new Peer({host: location.hostname, port: 3000, secure: true, path: '/peerjs'})
     this.peer.on('error', (err) => { alert(err) })
@@ -26,8 +29,8 @@ class MainContainer extends React.Component {
       this.conn.on('data', (o) => {
         if (o.color) this.setState({color: o.color})
         else if (o.mass) {
-          this.levelup.pause()
-          this.levelup.play()
+          audio.levelup.pause()
+          audio.levelup.play()
           this.setState({mass: o.mass})
         }
       })
@@ -53,8 +56,8 @@ class MainContainer extends React.Component {
   touchEventHandler(e) {
     // fix for mobile audio
     if (!this.firstTime) {
-      this.levelup.play()
-      this.levelup.pause()
+      audio.levelup.play()
+      audio.levelup.pause()
       this.firstTime = true
     }
     this.setState({on: e.type === 'touchstart'})
