@@ -4,8 +4,10 @@
   "description": "Progetto per Programmazione di Interfacce @ UniPi.",
   "main": "index.js",
   "scripts": {
-    "start": "node server",
-    "build": "npm start && webpack --watch",
+    "start": "if-env NODE_ENV=production && npm run start:server || npm run start:dev",
+    "start:dev": "webpack --watch & npm run start:server",
+    "start:server": "node server",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,21 +21,30 @@
   },
   "homepage": "https://github.com/Pitasi/final-pi#readme",
   "dependencies": {
+    "compression": "^1.6.2",
     "express": "^4.14.0",
+    "if-env": "^1.0.0",
+    "peer": "^0.2.8",
+    "peerjs": "git@github.com:Pitasi/peerjs.git",
+    "qrcode.react": "^0.6.1",
+    "random-id": "0.0.2",
+    "randomcolor": "^0.4.4",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
-    "socket.io": "^1.5.1"
+    "react-fittext": "0.0.7",
+    "react-wakelock": "0.0.4"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2016": "^6.22.0",
     "babel-preset-react": "^6.16.0",
     "css-loader": "^0.26.0",
+    "file-loader": "^0.10.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.16.2"
+    "webpack": "^1.13.3"
   }
 }

@@ -1,21 +1,17 @@
 var webpack = require('webpack');
+var path = require('path');
+
+var outFolder = path.resolve(__dirname, 'dist');
 
 module.exports = {
   devtool: 'eval',
-  entry: [
-
-    // For hot style updates
-    'webpack/hot/dev-server',
-
-    // The script refreshing the browser on none hot updates
-    'webpack-dev-server/client?http://localhost:8080',
-
-    // Our application
-    './client/scripts/main.js'],
+  entry: {
+    desktop: './desktop/scripts/main.js',
+    mobile: './mobile/scripts/main.js'
+  },
   output: {
-    path: __dirname+'/client/dist',
-    filename: 'bundle.js',
-    publicPath: '/dist/'
+    path: outFolder,
+    filename: '[name]/bundle.min.js'
   },
   module: {
     loaders: [
@@ -30,8 +26,14 @@ module.exports = {
       {
         test: /\.less$/,
         loader: 'style-loader!css-loader!less-loader'
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader?name=assets/[name].[ext]'
       }
     ]
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()]
-};
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin()
+  ]
+}
