@@ -23,7 +23,10 @@ class MainContainer extends React.Component {
     this.peer = new Peer({host: location.hostname, port: 3000, secure: true, path: '/peerjs'})
     this.peer.on('error', (err) => { alert(err) })
 
-    this.code = location.hash?location.hash.slice(1):window.prompt('Enter the code')
+    this.code = location.hash ?
+                location.hash.slice(1).toLowerCase():
+                window.prompt('Enter the code').toLowerCase()
+                
     this.conn = this.peer.connect(this.code)
     this.conn.on('open', () => {
       this.conn.on('data', (o) => {

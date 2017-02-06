@@ -18,21 +18,47 @@ html, body, #main-wrapper {
   background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px
 }
 
+.animation{
+  @animation: all .15s ease-in-out;
+  transition: @animation;
+  -moz-transition: @animation;
+  -webkit-transition: @animation;
+}
+
 .infobox {
   @margin: 10px;
-  @animation: opacity .25s ease-in-out;
 
   position: absolute;
-  bottom: @margin;
+  top: @margin;
   right: @margin;
   float: right;
   text-align: right;
   opacity: 0.3;
-  transition: @animation;
-  -moz-transition: @animation;
-  -webkit-transition: @animation;
+  .animation;
+
+  canvas {
+    background: fadeout(white, 10%);
+    height: 50px !important;
+    width: 50px !important;
+    .animation;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.5em;
+    .animation;
+  }
 
   &:hover {
-    opacity: 0.7;
+    z-index: 1000;
+    opacity: 0.9;
+    canvas {
+      height: 120px !important;
+      width: 120px !important;
+    }
+    p {
+      font-size: 1em;
+    }
   }
 }

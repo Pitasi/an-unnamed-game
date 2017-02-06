@@ -119,10 +119,8 @@ class MainContainer extends React.Component {
       <div className="container">
         <div className="infobox">
           <h1>Players: {this.state.ballComponents.length}</h1>
-          <a href={`https://${location.host}/mobile/#${this.code}`} target="_blank">
             <QRCode value={`https://${location.host}/mobile/#${this.code}`} /> <br />
-            {`https://${location.host}/mobile/#${this.code}`}
-          </a>
+            <p>Lobby code: <b>{`${this.code.toUpperCase()}`}</b></p>
         </div>
         {this.state.ballComponents}
         {this.state.foodComponents}
