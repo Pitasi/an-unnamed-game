@@ -41,8 +41,8 @@ function Ball (props) {
     this.v.y = this.v.y * this.friction
 
     let newpos = {
-      y: parseInt(this.pos.y + this.v.y / this.mass),
-      x: parseInt(this.pos.x + this.v.x / this.mass)
+      y: parseInt(this.pos.y + this.v.y / (5*Math.sqrt(this.mass))),
+      x: parseInt(this.pos.x + this.v.x / (5*Math.sqrt(this.mass)))
     }
 
     if (newpos.x - this.getRadius() < 0) { newpos.x = this.getRadius(); this.v.x = -this.v.x }

@@ -20,7 +20,9 @@ class MainContainer extends React.Component {
 
     this.balls = []
     this.food = []
-    this.state = {ballComponents: []}
+    this.state = {
+      ballComponents: []
+    }
 
     this.code = randomID(3, 'a')
     this.peer = new Peer(this.code, {
@@ -115,12 +117,17 @@ class MainContainer extends React.Component {
   }
 
   render() {
+    let playerList = this.state.ballComponents.map((p) => {
+      return <li key={p.key}>{p.key}</li>
+    })
     return (
       <div className="container">
         <div className="infobox">
           <h1>Players: {this.state.ballComponents.length}</h1>
-            <QRCode value={`https://${location.host}/#${this.code}`} /> <br />
-            <p>Lobby code: <b>{`${this.code.toUpperCase()}`}</b></p>
+          <ul> {playerList} </ul>
+
+          <QRCode value={`https://${location.host}/#${this.code}`} /> <br />
+          <p>Lobby code: <b>{`${this.code.toUpperCase()}`}</b></p>
         </div>
         {this.state.ballComponents}
         {this.state.foodComponents}
