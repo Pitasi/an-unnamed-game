@@ -9,7 +9,8 @@ import {Ball, BallComponent} from './ball.js'
 
 require('../styles/main.less')
 var audio = {
-  welcome: new Audio(require('../sound/welcome.mp3'))
+  welcome: new Audio(require('../sound/welcome.mp3')),
+  pop:     require('../sound/pop.mp3')
 }
 
 class MainContainer extends React.Component {
@@ -82,6 +83,7 @@ class MainContainer extends React.Component {
     let d = Math.sqrt(x*x + y*y)
     if (d < r1) {
       // b1 eats b2
+      (new Audio(audio.pop)).play()
       b1.setMass(b2.mass/2)
       b2.active = false
     }

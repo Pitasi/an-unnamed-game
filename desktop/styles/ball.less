@@ -1,8 +1,21 @@
 .ball {
   @border-width: 3px;
-  
+
   position: absolute;
   border-radius: 50%;
   padding: @border-width;
   border: @border-width solid rgba(0, 0, 0, 0.35);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fafafa;
+  text-shadow: -1px -1px 0 rgba(0,0,0,0.6),
+                1px  1px 0 rgba(0,0,0,0.6),
+               -1px  1px 0 rgba(0,0,0,0.6),
+                1px -1px 0 rgba(0,0,0,0.6);
+  h1 {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
 }

@@ -1,6 +1,12 @@
 import React from 'react'
-import randomColor from 'randomcolor'
+import ReactFitText from 'react-fittext'
+import getRandomColor from 'randomcolor'
+
 require('../styles/ball.less')
+
+function randInt (min, max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
 
 function Ball (props) {
   this.player = props.player // difference between food and players
@@ -11,10 +17,10 @@ function Ball (props) {
   this.friction = 0.96
   this.v = { x: 0, y: 0 }
   this.pos = {
-    x: Math.floor(Math.random()*((window.innerWidth-this.mass-this.padding)+this.mass+this.padding)),
-    y: Math.floor(Math.random()*((window.innerHeight-this.mass-this.padding)+this.mass+this.padding)),
+    x: randInt(this.mass+this.padding+1, window.innerWidth-this.mass-this.padding-1),
+    y: randInt(this.mass+this.padding+1, window.innerHeight-this.mass-this.padding-1)
   }
-  this.color = this.player ? randomColor() : '#76FF03'
+  this.color = this.player ? getRandomColor() : '#76FF03'
 
   if (this.player) {
     this.conn = props.conn
@@ -82,17 +88,26 @@ function Ball (props) {
 }
 
 function BallComponent (props) {
-  return (<div style={{
-    background: props.ball.color,
-    height: props.ball.mass,
-    width: props.ball.mass,
-    left: props.ball.pos.x + 'px',
-    top: props.ball.pos.y + 'px',
-    marginLeft: -props.ball.getSize()/2,
-    marginTop: -props.ball.getSize()/2,
-    zIndex: props.ball.mass
-  }}
-  className="ball"></div>)
+
+
+  return (
+    <div style={{
+      background: props.ball.color,
+      height: props.ball.mass,
+      lineHeight: props.ball.mass + 'px',
+      width: props.ball.mass,
+      left: props.ball.pos.x + 'px',
+      top: props.ball.pos.y + 'px',
+      marginLeft: -props.ball.getSize()/2,
+      marginTop: -props.ball.getSize()/2,
+      zIndex: props.ball.mass
+    }}
+    className="ball">
+      <h1 style={{
+        fontSize: (props.ball.mass/10) + 'px'
+      }}>{props.ball.player?props.ball.conn.peer:''}</h1>
+    </div>
+  )
 }
 
 module.exports = {
