@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import ReactFitText from 'react-fittext'
 import Peer from 'peerjs'
 import MainForm from './form.js'
+import GameOver from './gameover.js'
 
 /* Assets */
 require('../styles/main.less')
@@ -18,6 +19,8 @@ class MainContainer extends React.Component {
       mass: 30,
       on: false
     }
+
+    this.startTime = new Date() //fallback for debug
 
     this.code = location.hash ?
                 location.hash.slice(1).toLowerCase():
@@ -39,7 +42,7 @@ class MainContainer extends React.Component {
           this.setState({mass: o.mass})
         }
         else if (o.dead) {
-
+          this.setState({dead: true})
         }
       })
     })
@@ -59,6 +62,7 @@ class MainContainer extends React.Component {
           y: this.gyro.y || 0
         })
     }, 30)
+    this.startTime = new Date()
   }
 
   touchEventHandler(e) {
@@ -78,6 +82,12 @@ class MainContainer extends React.Component {
                 <ReactFitText>
                   <span>Connecting to server...</span>
                 </ReactFitText>
+
+    if (this.state.dead)
+      return (<GameOver
+                  background={this.state.color}
+                  date={this.startTime}
+                  level={this.state.mass} />)
 
     if (!this.code || !this.name)
       return (<MainForm handleSubmit={this.formHandler.bind(this)} />)

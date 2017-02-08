@@ -1,0 +1,42 @@
+@textColor: fadeOut(white, 30%);
+
+.gameoverWrapper {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  color: @textColor;
+  background: #e67e22;
+  text-align: center;
+  padding-top: 20px;
+
+  button {
+    border: 2px @textColor solid;
+    border-radius: 25px;
+    color: @textColor;
+    height: 40px;
+    width: 35%;
+    font-size: 1em;
+    background: transparent;
+  }
+}
+
+.statisticsWrapper {
+  border: 2px @textColor solid;
+  border-radius: 20px;
+  font-size: 1em;
+  margin: 100px auto;
+  padding: 10px;
+  width: 60%;
+
+  ul {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    padding-left: 20px;
+  }
+
+  h3 {
+    margin: 0 0 15px 0;
+    padding: 0;
+  }
+}

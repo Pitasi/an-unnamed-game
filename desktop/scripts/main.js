@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import QRCode from 'qrcode.react'
+import HowTo from './howto.js'
 
 import Peer from 'peerjs'
 import randomID from 'random-id'
@@ -22,7 +23,8 @@ class MainContainer extends React.Component {
     this.balls = []
     this.food = []
     this.state = {
-      ballComponents: []
+      ballComponents: [],
+      firstTime: localStorage.getItem('firstTime')
     }
 
     this.code = randomID(3, 'a')
@@ -85,6 +87,7 @@ class MainContainer extends React.Component {
       // b1 eats b2
       (new Audio(audio.pop)).play()
       b1.setMass(b2.mass/2)
+      if (b2.player) b2.conn.send({dead: true})
       b2.active = false
     }
   }
@@ -118,12 +121,22 @@ class MainContainer extends React.Component {
     this.gameLoop()
   }
 
+  closeHowTo() {
+    localStorage.setItem('firstTime', true)
+    this.setState({firstTime: true})
+  }
+
   render() {
     let playerList = this.state.ballComponents.map((p) => {
       return <li key={p.key}>{p.key}</li>
     })
+    let howto = (!this.state.firstTime) ?
+                <HowTo clickHandler={this.closeHowTo.bind(this)} url={`https://${location.host}/#${this.code}`} /> :
+                <span></span>
+
     return (
       <div className="container">
+        {howto}
         <div className="infobox">
           <h1>Players: {this.state.ballComponents.length}</h1>
           <ul> {playerList} </ul>
