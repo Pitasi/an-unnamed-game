@@ -7,9 +7,6 @@ import MainForm from './form.js'
 
 /* Assets */
 require('../styles/main.less')
-var audio = {
-  levelup: new Audio(require('../sound/levelup.mp3'))
-}
 
 /* React components */
 
@@ -39,9 +36,10 @@ class MainContainer extends React.Component {
       this.conn.on('data', (o) => {
         if (o.color) this.setState({color: o.color})
         else if (o.mass) {
-          audio.levelup.pause()
-          audio.levelup.play()
           this.setState({mass: o.mass})
+        }
+        else if (o.dead) {
+
         }
       })
     })
@@ -64,12 +62,6 @@ class MainContainer extends React.Component {
   }
 
   touchEventHandler(e) {
-    // fix for mobile audio
-    if (!this.firstTime) {
-      audio.levelup.play()
-      audio.levelup.pause()
-      this.firstTime = true
-    }
     this.setState({on: e.type === 'touchstart'})
   }
 
