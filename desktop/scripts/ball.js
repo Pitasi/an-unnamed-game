@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactFitText from 'react-fittext'
-import getRandomColor from 'randomcolor'
+import getRandomColor from '../../shared/colors.js'
 
 require('../styles/ball.less')
 

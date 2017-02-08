@@ -1,4 +1,5 @@
 import React from 'react'
+import getRandomColor from 'randomcolor'
 
 require('../styles/form.less')
 
@@ -26,7 +27,8 @@ class MainForm extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value})
+    let n = event.target.value
+    this.setState({value: n.substr(0, 10)})
   }
 
   handleSubmit(event) {
@@ -39,9 +41,10 @@ class MainForm extends React.Component {
     let text = this.state.value ? `Hello ${this.state.value}!` : "Welcome!"
 
     return (
-      <form className='mainForm' onSubmit={this.handleSubmit}>
+      <form className='mainForm' onSubmit={this.handleSubmit}
+            style={{background: getRandomColor({luminosity: 'dark'})}}>
         <p>{text}</p>
-        <input type="text" placeholder="Pick a nickname" value={this.state.value} onChange={this.handleChange} /><br />
+        <input type="text" maxLength="10" placeholder="Pick a nickname" value={this.state.value} onChange={this.handleChange} /><br />
         <input type="submit" value="Ready" />
         <Instructions />
       </form>
