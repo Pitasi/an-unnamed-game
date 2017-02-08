@@ -25,6 +25,7 @@ class MainContainer extends React.Component {
     this.code = location.hash ?
                 location.hash.slice(1).toLowerCase():
                 window.prompt('Enter the lobby code:').toLowerCase()
+    window.location.hash = '#'+this.code;
   }
 
   formHandler(name) {
