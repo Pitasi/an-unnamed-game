@@ -9,6 +9,7 @@ Il gioco prevede di essere aperto sul desktop, dove verrà usato come schermo pe
 Ogni giocatore apre il QR Code fornito dal desktop sul proprio cellulare, e sfruttando l'accelerometro può muovere la sua pallina per mangiare le altre e diventare più grande.
 
 # Demo
+*** **LA DEMO NON E' PIU' DISPONIBILE** ***  
 Una demo funzionante del gioco è disponibile all'indirizzo https://game.zaph.pw.
 Potrebbe essere necessario utilizzare Google Chrome sia su computer che su mobile per poter funzionare correttamente.
 
